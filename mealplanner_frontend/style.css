@@ -1,0 +1,56 @@
+body {
+    margin: 5;
+    color: firebrick;
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    font-style: italic;
+    background-color: cornsilk;
+}
+
+.container {
+    text-align: center;
+}
+
+main {
+    text-align: center;
+    justify-content: space-evenly;
+    border: 10px rosybrown;
+}
+
+.recipe-card {
+    text-align: center;
+    border: 5px rosybrown
+}
+
+.create-recipe {
+    text-align: center;
+}
+
+
+#user-greeting {
+    text-align: center;
+    color: firebrick;
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    font-style: italic;
+    font-size: 25px;
+}
+
+button {
+    color: firebrick;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #9e0000;
+}
+
+.submit-recipe {
+    color: firebrick;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #9e0000;
+}
+
+.submit-user {
+    color: firebrick;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #9e0000;
+}

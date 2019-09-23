@@ -1,0 +1,63 @@
+  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Meal Planner</title>
+    <link rel="stylesheet" type="text/css" href="./style.css">
+</head>
+<body>
+        <div class='recipes-buttons'><button id="recipes-bttn">View All Recipes</button>   <button id="users-bttn">See Your Meal Plan</button></div>
+        </br>
+        <div class="search-options">
+                <div class="search-options-criteria">
+                    <label for="search-meal">Search By Meal:</label>
+                    <select id="meal-search-menu" name="search-meal">
+                        <option value="find_breakfast">Breakfast</option>
+                        <option value="find_lunch">Lunch</option>
+                        <option value="find_dinner">Dinner</option>
+                    </select>
+                </div>
+    
+        </div>
+        
+    <h2 id='user-greeting'>
+
+    </h2>
+    <div id='user-planner'>
+
+    </div>
+    <main>
+    
+    </main>
+    <div class='create-recipe' >
+        <form class='create-recipe-form' >
+            <h3>Create A New Recipe</h3>
+            Title: <input type='text' name='title' id='recipe-name'>
+            </br>
+            Meal: <input type='text' name='meal' id='recipe-meal'>
+            </br>
+            Prep Time: <input type='text' name='prep-time' id='recipe-prep'>
+            </br>
+            Cook Time: <input type='text' name='cook-time' id='recipe-cook'>
+            </br>
+            <input type='submit' name='submit' class='submit-recipe'> 
+        </form>
+    </div>
+    <div class='new-recipe-page'>
+
+    </div>
+    <div class='container'>
+        <form class='sign-in-form' >
+            <h3>Sign In Here</h3>
+            Name: <input type='text' name='name' id="user-sign-in-name" class='input-text'>
+            </br>
+            Email: <input type='text' name='email' id="user-sign-in-email" class='input-text'>
+            </br>
+            <input type='submit' name='submit' class='submit-user'>
+        </form>
+    </div>
+    <script type="text/javascript" language='javascript' src="src/index.js"></script>
+</body>
+ </html>
+
