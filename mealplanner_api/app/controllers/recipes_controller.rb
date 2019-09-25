@@ -1,12 +1,12 @@
 class RecipesController < ApplicationController
     def index
         recipes = Recipe.all 
-        render json: RecipeSerializer.new(recipes).to_serialized_json  
+        render json: recipes, except: [:created_at, :updated_at]
     end
 
     def create
         recipe = Recipe.create(recipes_params)
-        render json: RecipeSerializer.new(recipe).to_serialized_json
+        render json: recipe, except: [:created_at, :updated_at]
     end
 
     def find_breakfast
@@ -27,11 +27,18 @@ class RecipesController < ApplicationController
     def show
         recipe = Recipe.find_by(id: params[:id])
         if recipe
-            render json: RecipeSerializer.new(recipe).to_serialized_json
+            render json: recipe, except: [:created_at, :updated_at]
             
         else
             render json: {message: 'Recipe Not Found'}
         end
+    end
+
+    def destroy
+        recipe = Recipe.find(params[:id])
+        recip.destroy
+
+        render json: recipe, except: [:created_at, :updated_at]
     end
 
     private

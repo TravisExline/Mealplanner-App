@@ -6,11 +6,14 @@ class PlannerRecipesController < ApplicationController
 
     def create
         planner_recipe = PlannerRecipe.create(planner_recipe_params)
+
         planner = Planner.find(planner_recipe_params[:planner_id])
         user = planner.user
+        # byebug
+        
 
         render json: user, :include => {
-            planner: {
+            planners: {
                 except: [:created_at, :updated_at],
                 include: {
                     planner_recipes: {
@@ -22,12 +25,12 @@ class PlannerRecipesController < ApplicationController
     end
 
     def destroy
-        planner_recipe = PlannerRecipe.find_by(id: params[:id])
+        planner_recipe = PlannerRecipe.find(params[:id])
         user = planner_recipe.planner.user
         planner_recipe.destroy
 
         render json: user, :include => {
-            planner: {
+            planners: {
                 except: [:created_at, :updated_at],
                 include: {
                     planner_recipes: {

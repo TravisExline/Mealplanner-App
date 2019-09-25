@@ -1,21 +1,28 @@
 class PlannersController < ApplicationController
     def index
         planners= Planner.all 
-        render json: PlannerSerializer.new(planners).to_serialized_json
+        render json: planners, except: [:created_at, :updated_at], :include => {
+            recipes: {
+                except: [:created_at, :updated_at]
+            }
+        } 
     end
 
     def create
         planner = Planner.create[planner_params]
-        render json: PlannerSerializer.new(planner).to_serialized_json
+        render json: planner, except: [:created_at, :updated_at], :include => {
+            recipes: {
+                except: [:created_at, :updated_at]
+            }
+        }
     end
 
 
     def show
         planner = Planner.find_by(id: params[:id])
-        planner.save
-        user = planner.user
         if planner
-            render json: PlannerSerializer.new(planner).to_serialized_json
+            render json: planner, include: [:recipe]
+            # PlannerSerializer.new(planner).to_serialized_json
         else
             render json: {message: "This Weeks Meal Planner is Not Found"}
         end
@@ -25,4 +32,6 @@ class PlannersController < ApplicationController
     
     def planner_params()
         params.require(:planner)
+    end
+    
 end

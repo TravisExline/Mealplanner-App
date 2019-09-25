@@ -13,7 +13,6 @@ body {
 main {
     text-align: center;
     justify-content: space-evenly;
-    border: 10px rosybrown;
 }
 
 .recipe-card {
@@ -22,6 +21,10 @@ main {
 }
 
 .create-recipe {
+    text-align: center;
+}
+
+.planner-recipe-card {
     text-align: center;
 }
 
@@ -39,6 +42,10 @@ button {
     border-style: solid;
     border-width: 2px;
     border-color: #9e0000;
+    }
+
+#logout-button {
+    float: right;
 }
 
 .submit-recipe {

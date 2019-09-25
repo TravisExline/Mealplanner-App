@@ -16,8 +16,10 @@ const searchOptions = document.querySelector('.search-options')
 
 const recipesButton = document.querySelector('#recipes-bttn')
 const usersButton = document.querySelector('#users-bttn')
+const logoutButton = document.querySelector("#logout-button")
 
 const addToPlanner = document.querySelector('#recipe-button')
+const plannerRecipes = document.querySelector('.planner-recipe-card')
 
 const newRecipeName = document.querySelector('#recipe-name')
 const newRecipeMeal = document.querySelector('#recipe-meal')
@@ -26,8 +28,10 @@ const newRecipeCook = document.querySelector('#recipe-cook')
 const newRecipePage = document.querySelector('.new-recipe-page')
 
 
+
 document.addEventListener('DOMContetnLoaded', function() {
     fetchRecipes()
+    hideRecipeForm()
     isCurrentUser()
 })
 
@@ -36,6 +40,8 @@ recipesButton.addEventListener('click', function() {
     fetchRecipes()
     renderRecipes()
     showRecipes()
+    hideUserPlanner()
+    hidePlannerRecipes()
     hideSignInForm()
     hideRecipeForm()
     hideNewRecipe()
@@ -46,6 +52,7 @@ usersButton.addEventListener('click', function() {
     hideRecipes()
     showCurrentUser()
     isCurrentUser()
+    renderUserPlanner()
     showUserPlanner()
     hideNewRecipe()
     showRecipeForm()
@@ -106,29 +113,6 @@ createRecipeForm.addEventListener('submit', function(e) {
 })
 
 
-// addToPlanner.addEventListener('click', function(e) {
-//     e.preventDefault()
-//     // debugger
-//     fetch(plannerRecipesURL, {
-//         method: "POST",
-//         headers: {
-//             "Content-Type": "application/json",
-//             Accept: "application/json"
-//         },
-//         body: JSON.stringify({
-//             planner_id: planner.id.value,
-//             recipe_id: recipe.id.value
-//         })
-//     })
-//     .then(res => res.json())
-//     .then(res => {
-//         currentUser = res 
-//         // debugger
-//         renderCurrentUser()
-//         renderUserPlanner()
-//     })
-// })
-
 function helpRecipeDisplay() {
     if(currentRecipe){
         let id = currentRecipe.id
@@ -160,6 +144,11 @@ function hideRecipes() {
 function hideUserPlanner() {
     userPlanner.style.display = 'none'
 }
+
+function hidePlannerRecipes() {
+    plannerRecipes.style.display = 'none'
+}
+
 
 function hideCurrentUser() {
     userGreeting.style.display = 'none'
@@ -197,15 +186,21 @@ function showSignInForm() {
     signInForm.style.display = ""
 }
 
+logoutButton.addEventListener('click', () => {
+    localStorage.clear(currentUser)
+    // debugger
+    window.location.reload()
+})
+
 function renderCurrentUser() {
-    // showCurrentUser()
-    // let userPlanner = currentUser.planners[currentUser.planners.length - 1]
     userGreeting.innerText = " "
     userGreeting.innerText = `${currentUser.name}'s Meal Plan`
     // debugger
-    renderUserPlanner()
+    // renderUserPlanner()
     showUserPlanner()
     renderRecipeForm()
+    hideSignInForm()
+    hideRecipes()
 }
 
 function renderRecipeForm() {
@@ -223,39 +218,21 @@ function renderNewRecipe() {
    </div>`
 }
 
-function renderUserPlanner() {
-
+function renderUserPlanner(planner_recipe) {
+    // debugger
+        // debugger
+        userPlanner.innerHTMML = " "
+        userPlanner.innerHTML += `<div class="planner-recipe-card">
+        <h3>${planner_recipe.title}</h3>
+        <p><strong>${planner_recipe.meal}</strong></p>
+        <p>Prep: ${planner_recipe.prep_time}</p>
+        <p>Cook: ${planner_recipe.cook_time}</p>
+        <button onclick=removeFromPlanner(event) data-planner-recipe-id="${planner_recipe.id}" >Remove ${planner_recipe.title} from Planner</button>
+        </br>
+        </br>
+        </div>`
 }
 
-// function loadEventListener() {
-//     mainContainer.addEventListener('click', getRecipe)
-// }
-
-// function getRecipe(e) {
-//     if(e.target.mainContainer.contains('recipe-button')) {
-//         const addedRecipe = e.target.ParentElement.ParentElement;
-//         getRecipeInfo(addedRecipe)
-//     }
-// }
-
-// function getRecipeInfo(recipe) {
-//     const recipeInfo = {
-//         title: recipe.querySelector('h3').textContent
-//     }
-//     addRecipeToPlanner(recipeInfo)
-// }
-
-// function addRecipeToPlanner(recipe) {
-//     const row = document.createElement('h3');
-//     row.innerHTML = `
-//     <h3>
-//         ${recipe.title}
-//     </h3>
-//     </br>
-//     </br>`
-
-//     userPlanner.appendChild(row)
-// }
 
 function fetchRecipes() {
     fetch(recipesURL)
@@ -273,22 +250,65 @@ function renderRecipes(recipes) {
     recipes.forEach(recipe => {
         // debugger
         mainContainer.innerHTML += `<div class="recipe-card">
-        
         <h3>${recipe.title}</h3>
         <p><strong>${recipe.meal}</strong></p>
         <p>Prep: ${recipe.prep_time}</p>
         <p>Cook: ${recipe.cook_time}</p>
         <button onclick=addRecipeToPlanner(event) data-recipe-id="${recipe.id}" >Add ${recipe.title} to Planner</button>
+        </div>
         </br>
-        </br>
-        </div>`
+        </br>`
     })
 }
+
+function removeFromPlanner(event) {
+    let plannerRecipe = event.target.dataset.plannerRecipeId
+    // debugger
+    fetch(plannerRecipesURL + "/" + plannerRecipe, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+        },
+        body: JSON.stringify({
+            id: plannerRecipe,
+        })
+    })
+    .then(res => res.json())
+    .then(res => {
+        currentUser = res
+        // debugger
+        renderCurrentUser()
+    })
+}
+
+// function removeRecipe(event) {
+//     let recipe = event.target.dataset
+//     fetch(recipesURL + "/" + recipe, {
+//         method: "DELETE",
+//         headers: {
+//             "Content-Type": "application/json",
+//             Accept: "application/json"
+//         },
+//         body: JSON.stringify({
+//             title: recipe.title,
+//             meal: recipe.meal,
+//             prep_time: recipe.prep_time,
+//             cook_time: recipe.cook_time
+//         }),
+//     })
+//     .then(res => res.json())
+//     .then(res => {
+//         currentUser = res 
+//         debugger
+//         renderCurrentUser()
+//     })
+// }
 
 
 function addRecipeToPlanner(event) {
     // debugger
-    let plannerId = currentUser.planners[currentUser.planners.length]
+    let plannerId = currentUser.planners[currentUser.planners.length - 1].id
     // debugger
     fetch(plannerRecipesURL, {
         method: "POST",
@@ -297,15 +317,19 @@ function addRecipeToPlanner(event) {
             Accept: "application/json"
         },
         body: JSON.stringify({
-            planner_id: `${plannerId}`,
-            recipe_id: `${event.target.dataset.recipeId}`
+            planner_id: plannerId,
+            recipe_id: event.target.dataset.recipeId
         }),
     })
     .then(res => res.json())
     .then(res => {
-        debugger
-        currentUser = res 
+        // debugger
+        currentUser = res
+        showCurrentUser()
         renderCurrentUser()
+        let planner_recipe = currentUser.planners[0].planner_recipes[currentUser.planners[0].planner_recipes.length-1].recipe
+        // debugger
+        renderUserPlanner(planner_recipe)
     })
 }
 
