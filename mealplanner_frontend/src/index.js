@@ -29,22 +29,22 @@ const newRecipePage = document.querySelector('.new-recipe-page')
 
 
 
-document.addEventListener('DOMContetnLoaded', function() {
-    fetchRecipes()
+document.addEventListener('DOMContetnLoaded', initialLoad())
+
+function initialLoad(e) {
+
     hideRecipeForm()
-    isCurrentUser()
-})
+    // fetchRecipes()
+    // isCurrentUser()
+}
 
 recipesButton.addEventListener('click', function() {
     showRecipes()
-    fetchRecipes()
-    renderRecipes()
-    showRecipes()
     hideUserPlanner()
-    hidePlannerRecipes()
-    hideSignInForm()
+    // hidePlannerRecipes()
     hideRecipeForm()
     hideNewRecipe()
+    fetchRecipes()
     // debugger
 })
 
@@ -52,10 +52,11 @@ usersButton.addEventListener('click', function() {
     hideRecipes()
     showCurrentUser()
     isCurrentUser()
-    renderUserPlanner()
     showUserPlanner()
     hideNewRecipe()
     showRecipeForm()
+    isCurrentUser()
+    // renderUserPlanner()
     // debugger
 })
 
@@ -196,10 +197,8 @@ function renderCurrentUser() {
     userGreeting.innerText = " "
     userGreeting.innerText = `${currentUser.name}'s Meal Plan`
     // debugger
-    // renderUserPlanner()
     showUserPlanner()
     renderRecipeForm()
-    hideSignInForm()
     hideRecipes()
 }
 
@@ -220,18 +219,17 @@ function renderNewRecipe() {
 
 function renderUserPlanner(planner_recipe) {
     // debugger
-        // debugger
         userPlanner.innerHTMML = " "
         userPlanner.innerHTML += `<div class="planner-recipe-card">
         <h3>${planner_recipe.title}</h3>
         <p><strong>${planner_recipe.meal}</strong></p>
         <p>Prep: ${planner_recipe.prep_time}</p>
         <p>Cook: ${planner_recipe.cook_time}</p>
-        <button onclick=removeFromPlanner(event) data-planner-recipe-id="${planner_recipe.id}" >Remove ${planner_recipe.title} from Planner</button>
         </br>
         </br>
         </div>`
 }
+
 
 
 function fetchRecipes() {
@@ -261,26 +259,26 @@ function renderRecipes(recipes) {
     })
 }
 
-function removeFromPlanner(event) {
-    let plannerRecipe = event.target.dataset.plannerRecipeId
-    // debugger
-    fetch(plannerRecipesURL + "/" + plannerRecipe, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json"
-        },
-        body: JSON.stringify({
-            id: plannerRecipe,
-        })
-    })
-    .then(res => res.json())
-    .then(res => {
-        currentUser = res
-        // debugger
-        renderCurrentUser()
-    })
-}
+// function removeFromPlanner(event) {
+//     let plannerRecipe = event.target.dataset.plannerRecipeId
+//     // debugger
+//     fetch(plannerRecipesURL + "/" + plannerRecipe, {
+//         method: "DELETE",
+//         headers: {
+//             "Content-Type": "application/json",
+//             Accept: "application/json"
+//         },
+//         body: JSON.stringify({
+//             id: plannerRecipe,
+//         })
+//     })
+//     .then(res => res.json())
+//     .then(res => {
+//         currentUser = res
+//         // debugger
+//         renderCurrentUser()
+//     })
+// }
 
 // function removeRecipe(event) {
 //     let recipe = event.target.dataset

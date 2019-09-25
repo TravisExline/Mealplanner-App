@@ -27,6 +27,7 @@ class PlannerRecipesController < ApplicationController
     def destroy
         planner_recipe = PlannerRecipe.find(params[:id])
         user = planner_recipe.planner.user
+        # byebug
         planner_recipe.destroy
 
         render json: user, :include => {
