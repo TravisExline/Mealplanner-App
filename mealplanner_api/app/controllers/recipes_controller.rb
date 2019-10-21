@@ -6,7 +6,7 @@ class RecipesController < ApplicationController
 
     def create
         recipe = Recipe.create(recipes_params)
-        render json: recipe, except: [:created_at, :updated_at]
+        render json: recipe,  except: [:created_at, :updated_at]
     end
 
     def find_breakfast
@@ -27,7 +27,7 @@ class RecipesController < ApplicationController
     def show
         recipe = Recipe.find_by(id: params[:id])
         if recipe
-            render json: recipe, except: [:created_at, :updated_at]
+            render json: recipe,  except: [:created_at, :updated_at]
             
         else
             render json: {message: 'Recipe Not Found'}

@@ -24,10 +24,10 @@ class PlannerRecipesController < ApplicationController
         }, except: [:created_at, :updated_at]
     end
 
-    def destroy
-        planner_recipe = PlannerRecipe.find(params[:id])
+
+    def remove
+        planner_recipe = PlannerRecipe.find_by(planner_recipe_params)
         user = planner_recipe.planner.user
-        # byebug
         planner_recipe.destroy
 
         render json: user, :include => {

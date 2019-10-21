@@ -1,33 +1,31 @@
 class UsersController < ApplicationController
     def index
         users = User.all 
-        render json: users, except: [:created_at, :updated_at],
-        :include => {
+        render json: user, :include => {
             planners: {
                 except: [:created_at, :updated_at],
                 include: {
-                    recipe: {
-                        except: [:created_at, :updated_at],
+                    planner_recipes: {
+                        include: :recipe
                     }
                 }
             }
-        }
+        }, except: [:created_at, :updated_at]
     end
 
     def show 
         user = User.find_by(id: params[:id])
         if user
-            render json: user, except: [:created_at, :updated_at],
-            :include => {
+            render json: user, :include => {
                 planners: {
                     except: [:created_at, :updated_at],
                     include: {
-                        recipes: {
-                            except: [:created_at, :updated_at],
+                        planner_recipes: {
+                            include: :recipe
                         }
                     }
                 }
-            }
+            }, except: [:created_at, :updated_at]
         else
             render json: {message: 'User Not Found'}
         end
@@ -39,17 +37,16 @@ class UsersController < ApplicationController
             planner = Planner.create
             user.planners << planner
         end
-        render json: user, except: [:created_at, :updated_at],
-        :include => {
+        render json: user, :include => {
             planners: {
                 except: [:created_at, :updated_at],
                 include: {
-                    recipes: {
-                        except: [:created_at, :updated_at],
+                    planner_recipes: {
+                        include: :recipe
                     }
                 }
             }
-        }
+        }, except: [:created_at, :updated_at]
     end
 
     private
